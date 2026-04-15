@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 
+
 namespace ParisarAPI.Models
 {
     public class AppDbContext : DbContext

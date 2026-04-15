@@ -138,30 +138,70 @@ namespace ParisarAPI.Controllers
         // POST: api/Locations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ApiResponseDto<Location>>> PostLocation(Location location)
+        public async Task<ActionResult<ApiResponseDto<bool>>> PostLocation(Location location)
         {
             try
             {
+                // 🔴 1. Model validation (fix your error)
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ApiResponseDto<object>
+                    {
+                        Success = false,
+                        Message = "Validation failed",
+                        Data = ModelState
+                    });
+                }
+
+                // 🔴 2. Null / empty check (extra safety)
+                if (string.IsNullOrWhiteSpace(location.Name))
+                {
+                    return BadRequest(new ApiResponseDto<object>
+                    {
+                        Success = false,
+                        Message = "Location name is required"
+                    });
+                }
+
+                // 🔴 3. Duplicate check (you were missing this)
+                var exists = await _context.Locations
+                    .AnyAsync(x => x.Name.ToLower() == location.Name.ToLower());
+
+                if (exists)
+                {
+                    return BadRequest(new ApiResponseDto<object>
+                    {
+                        Success = false,
+                        Message = "Location already exists"
+                    });
+                }
+
+                // ✅ 4. Set system fields
+                location.CreatedBy = "admin";
+                location.UpdatedBy = "admin";
+                location.CreatedAt = DateTime.UtcNow;
+                location.UpdatedAt = DateTime.UtcNow;
+
+                // ✅ 5. Save
                 _context.Locations.Add(location);
                 await _context.SaveChangesAsync();
 
                 return Ok(new ApiResponseDto<bool>
                 {
                     Success = true,
-                    Message = "Location Added successfully.",
+                    Message = "Location added successfully",
                     Data = true
                 });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new ApiResponseDto<Location>
+                return StatusCode(500, new ApiResponseDto<object>
                 {
                     Success = false,
                     Message = ex.Message
                 });
             }
         }
-
 
         // DELETE: api/Locations/5
         [HttpDelete("{id}")]
