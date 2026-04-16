@@ -26,17 +26,18 @@
     public class MonthlyTrendDto
     {
         public int Year { get; set; }
-        public int MonthNumber { get; set; }   // 🔥 keep this
+        public int MonthNumber { get; set; } 
 
         public string Month { get; set; }
         public double PM10 { get; set; }
         public double PM25 { get; set; }
     }
-    //public class MonthlyMultiYearDto
-    //{
-    //    public int Month { get; set; }
-    //    public Dictionary<int, double> YearlyPM10 { get; set; }
-    //    public Dictionary<int, double> YearlyPM25 { get; set; }
-    //}
-
+    public class DashboardSummaryDto
+    {
+        public int TotalDays { get; set; }
+        public int AvailableDays { get; set; }
+        public int PollutionRank { get; set; }
+        public int ExceedingPM25Days { get; set; }
+        public int ExceedingPM10Days { get; set; }
+    }
 }

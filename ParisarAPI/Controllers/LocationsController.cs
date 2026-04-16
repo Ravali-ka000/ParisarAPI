@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Evaluation;
 using Microsoft.EntityFrameworkCore;
-using ParisarAPI.DTo_s;
+using ParisarAPI.DTOs;
 using ParisarAPI.Models;
 using System;
 using System.Collections.Generic;

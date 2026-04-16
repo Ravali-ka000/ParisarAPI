@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
 using OfficeOpenXml;
-using ParisarAPI.DTo_s;
+using ParisarAPI.DTOs;
+using ParisarAPI.DTOs;
 using ParisarAPI.Models;
 
 namespace ParisarAPI.Controllers

@@ -94,17 +94,8 @@ namespace ParisarAPI.Controllers
                 });
             }
 
-            // 🔴 4. Optional: limit range
-            if ((to - from).TotalDays > 365)
-            {
-                return BadRequest(new
-                {
-                    success = false,
-                    message = "Date range cannot exceed 1 year."
-                });
-            }
 
-            // 🔴 5. Optional: validate locationId
+
             if (locationId.HasValue)
             {
                 var exists = await _dashboardService.LocationExists(locationId.Value);
@@ -129,6 +120,40 @@ namespace ParisarAPI.Controllers
             });
 
         }
-    }
+    
+                [HttpGet("summary")]
+                public async Task<IActionResult> GetSummary(
+                [FromQuery] DateTime? fromDate,
+                [FromQuery] DateTime? toDate,
+                [FromQuery] int? locationId)
+                    {
+                        if (!fromDate.HasValue || !toDate.HasValue || !locationId.HasValue)
+                        {
+                            return BadRequest(new
+                            {
+                                success = false,
+                                message = "fromDate, toDate and locationId are required"
+                            });
+                        }
+            var from = fromDate.Value.Date;
+            var to = toDate.Value.Date;
 
+            if (from > to)
+                        {
+                            return BadRequest("Invalid date range");
+                        }
+
+            var data = await _dashboardService.GetSummary(from, to, locationId.Value
+                           
+                        );
+
+                        return Ok(new
+                        {
+                            success = true,
+                            message = "Dashboard summary fetched",
+                            data = data
+                        });
+                    }
+
+                } 
 }
