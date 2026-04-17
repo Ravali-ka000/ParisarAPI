@@ -14,5 +14,6 @@ namespace ParisarAPI.Models
         [Required]
         [Range(-180, 180, ErrorMessage = "Longitude must be between -180 and 180")]
         public double? Longitude { get; set; }
+        public string? Fileurl { get; set; }
     }
 }

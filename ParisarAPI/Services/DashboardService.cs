@@ -128,7 +128,7 @@ namespace ParisarAPI.Services
             int pm25Exceeded = locationData.Count(x => x.PM25 > 60);
             int pm10Exceeded = locationData.Count(x => x.PM10 > 100);
 
-            // 🔹 ranking (this is the tricky part)
+            // 🔹 ranking 
             var allLocations = await _context.PollutionData
                 .Where(p => p.Date >= from && p.Date <= to)
                 .GroupBy(p => p.LocationId)
